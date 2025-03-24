@@ -3,30 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuenta Regresiva</title>
+    <title>Cuenta Regresiva Animada</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        #countdown { font-size: 24px; font-weight: bold; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #333;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        #countdown {
+            font-size: 40px;
+            font-weight: bold;
+            color: #ff4d00;
+            transition: transform 0.3s ease-in-out, opacity 0.3s;
+            display: inline-block;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popEffect {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
     </style>
 </head>
 <body>
     <h3>Nos casamos en:</h3>
     <p id="countdown"></p>
+
     <script>
         function startCountdown(targetDate) {
             let targetTime = new Date(targetDate).getTime();
+
             let timer = setInterval(function () {
                 let now = new Date().getTime();
                 let timeLeft = targetTime - now;
+
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     document.getElementById("countdown").innerHTML = "¡El evento ha comenzado!";
                     return;
                 }
+
                 let days = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
-                document.getElementById("countdown").innerHTML = `${days} días restantes`;
+
+                let countdownElement = document.getElementById("countdown");
+                countdownElement.innerHTML = `${days} días!`;
+
+                // Añadir la animación de "pop"
+                countdownElement.style.animation = "popEffect 0.5s ease-in-out";
+                
+                // Resetear animación después de 0.5s
+                setTimeout(() => {
+                    countdownElement.style.animation = "";
+                }, 500);
+
             }, 1000);
         }
+
+        // Configura la fecha objetivo: 6 de febrero de 2026
         startCountdown("2026-02-06 00:00:00");
     </script>
 </body>
